@@ -54,8 +54,7 @@ public class in_sesion extends javax.swing.JFrame {
                  }else{
                      JOptionPane.showMessageDialog(null,"Error en el acceso vuelva a intentarlo");
                  }
-                         
-                 
+                                      
              }
         }catch (Exception e){
             JOptionPane.showMessageDialog(null,"Error en el acceso vuelva a intentarlo"+e.getMessage());
