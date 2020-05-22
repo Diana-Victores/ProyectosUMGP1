@@ -7,12 +7,14 @@
 package Login;
 
 import CONTENEDORMDI.ContenedorMDI;
+import PRUEBA_CONEXION.conexion;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -22,13 +24,44 @@ import javax.swing.JOptionPane;
  * @author Diana
  */
 public class in_sesion extends javax.swing.JFrame {
-
+   conexion cc=new conexion();
+     Connection con=cc.conexion();
     /**
      * Creates new form in_sesion
      */
     public in_sesion() {
         initComponents();
+        
     }
+    
+    public void validarAcceso (){
+        int resultado = 0;
+        try {
+            String usuario=txtusuario.getText();
+             String pass=String.valueOf(txtPass.getPassword());
+             String sql="select from Login where CodigoUsuario='"+usuario+"' and CodigoContrasenia='"+pass+"' ";
+             Statement st=con.createStatement();
+             ResultSet rs=st.executeQuery(sql);
+             
+             
+             if (rs.next()){
+                 resultado=1;
+                 if (resultado==1){
+                     ContenedorMDI form=new ContenedorMDI();
+                     form.setVisible(true);
+                     this.dispose();
+                     
+                 }else{
+                     JOptionPane.showMessageDialog(null,"Error en el acceso vuelva a intentarlo");
+                 }
+                         
+                 
+             }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null,"Error en el acceso vuelva a intentarlo"+e.getMessage());
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,7 +76,7 @@ public class in_sesion extends javax.swing.JFrame {
         txtusuario = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtcontraseña = new javax.swing.JPasswordField();
+        txtPass = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -65,7 +98,7 @@ public class in_sesion extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("CONTRASEÑA");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
-        jPanel1.add(txtcontraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 145, -1));
+        jPanel1.add(txtPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 145, -1));
 
         jButton1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jButton1.setText("INICIAR SESION");
@@ -127,19 +160,16 @@ public class in_sesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-               
-
+  
         try {
 
             Class.forName("com.mysql.jdbc.Driver");
+            Connection conectar = DriverManager.getConnection("jdbc:mysql://localhost/SIU", "root", "");
 
-            Connection conectar = DriverManager.getConnection("jdbc:mysql://localhost/LabSIU", "root", "");
-
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/LabSIU", "root", "");
+            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/SIU", "root", "");
             PreparedStatement pst = cn.prepareStatement("SELECT * FROM Login WHERE CodigoUsuario = ? AND CodigoContrasenia = ?");
             pst.setString(1, txtusuario.getText().trim());
-            pst.setString(2, txtcontraseña.getText().trim());
+            pst.setString(2, txtPass.getText().trim());
 
             ResultSet rs = pst.executeQuery();
 
@@ -153,11 +183,49 @@ public class in_sesion extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Credenciales incorrectas, por favor intente de nuevo");
                 txtusuario.setText("");
-                txtcontraseña.setText("");
+                txtPass.setText("");
             }
         } catch (HeadlessException | ClassNotFoundException | SQLException e) {
             Logger.getLogger(in_sesion.class.getName()).log(Level.SEVERE, null, e);
         }
+
+
+//   char clave[]=txtcontraseña.getPassword();
+//
+// 
+//   String clavedef=new String(clave);
+//
+//
+// 
+//  if (txtusuario.getText().equals("Administrador") && clavedef.equals("12345")){
+//
+//         
+//         this.dispose();
+//
+//       
+//         JOptionPane.showMessageDialog(null, "Bienvenido\n Has ingresado "
+//         + "satisfactoriamente al sistema", "Mensaje de bienvenida",
+//         JOptionPane.INFORMATION_MESSAGE);
+//
+//        
+//            // Instanciando el formulario principal
+//                ContenedorMDI frm = new ContenedorMDI();
+//              frm.setVisible(true);
+//              // Ocultando formulario actual
+//               this.setVisible(false);
+//
+//
+//   
+//   }else {
+//
+//
+//         
+//          JOptionPane.showMessageDialog(null, "Acceso denegado:\n"
+//          + "Por favor ingrese un usuario y/o contraseña correctos",  
+//          "Acceso denegado", JOptionPane.ERROR_MESSAGE);
+//            
+//
+//       }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -218,7 +286,7 @@ public class in_sesion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField txtcontraseña;
+    private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtusuario;
     // End of variables declaration//GEN-END:variables
 }

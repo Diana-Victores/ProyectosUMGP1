@@ -15,7 +15,7 @@ public class conexion {
         try {
            Class.forName("com.mysql.jdbc.Driver");
             
-            conectar=(Connection) DriverManager.getConnection ("jdbc:mysql://localhost/LabSIU", "root","");
+            conectar=(Connection)DriverManager.getConnection ("jdbc:mysql://localhost/SIU", "root","");
             
           //JOptionPane.showMessageDialog (null,"Conexion Exitosa");
             

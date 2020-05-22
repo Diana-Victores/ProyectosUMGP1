@@ -2,6 +2,7 @@
 package Login;
 
 import LoginUsuarios.registro;
+import PRUEBA_CONEXION.conexion;
 import java.sql.*;
 //import LoginUsuarios.registro;
 import java.sql.Connection;
@@ -17,7 +18,8 @@ import javax.swing.JOptionPane;
  */
 public class usuarios1 extends javax.swing.JFrame {
 
-    registro cc=new registro();
+    conexion cc=new conexion();
+    Connection con=cc.conexion();
  
     
     /**
@@ -37,13 +39,14 @@ public class usuarios1 extends javax.swing.JFrame {
        
            try{
             
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/LabSIU", "root", "");//conecta a MYSQL     
-            PreparedStatement pst = cn.prepareStatement("insert into Login values(?,?)");
-            pst.setString(1, "0");
-            pst.setString(2, txtUsuario.getText().trim()); 
-            pst.setString(3, txtPass.getText().trim()); 
-           
+            //Class.forName("com.mysql.jdbc.Driver");
+            //Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/SIU", "root", "");//conecta a MYSQL     
+         PreparedStatement pst = con.prepareStatement(sql);
+      //      PreparedStatement pst = con.prepareStatement("insert into Login values(?,?)");
+          
+            pst.setString(1, txtUsuario.getText()); 
+            pst.setString(2, txtPass.getText()); 
+                
             pst.executeUpdate();
             
              JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO");
@@ -196,19 +199,11 @@ public class usuarios1 extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
-    private void agregarusuario() {
+    private void agregarUsuarios() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private static class con {
-
-        private static PreparedStatement preparedStatement(String sql) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        public con() {
-        }
-    }
+    
 
   
 }
